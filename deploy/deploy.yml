@@ -15,8 +15,19 @@
     command: npm run build
     args:
       chdir: /tmp/goodcat/goodcat/
-    
-  # TODO: Not overwriting files?
+
+  - name: Delete old files
+    file:
+      path: /srv/goodcat_prod/
+      state: absent
+    become: yes
+
+  - name: Recreate prod dir
+    file:
+      path: /srv/goodcat_prod
+      state: directory 
+    become: yes
+
   - name: Copy to prod location
     copy:
       remote_src: yes
@@ -26,7 +37,7 @@
       force: yes
     become: yes
 
-  - name: Set up prod init script
+  - name: Copy prod init script
     copy:
       remote_src: yes 
       src: /tmp/goodcat/deploy/init.sh
