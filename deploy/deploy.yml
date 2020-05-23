@@ -1,3 +1,4 @@
+# Quick 'n' dirty deploy - builds, replaces, restarts
 ---
 - hosts: wren.passerines.io
   tasks:
@@ -45,7 +46,8 @@
       follow: yes
       force: yes
     become: yes
-
+ 
+  # N.B. This service is *not* defined anywhere in ansible, it's manually created on the server
   - name: Restart service
     systemd:
       name: goodcat.service
