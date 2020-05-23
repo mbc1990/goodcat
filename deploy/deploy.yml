@@ -15,21 +15,24 @@
     command: npm run build
     args:
       chdir: /tmp/goodcat/goodcat/
-
+    
+  # TODO: Not overwriting files?
   - name: Copy to prod location
     copy:
       remote_src: yes
       src: /tmp/goodcat/goodcat/
-      dest: /srv/
+      dest: /srv/goodcat_prod/
       follow: yes
+      force: yes
     become: yes
 
   - name: Set up prod init script
     copy:
       remote_src: yes 
       src: /tmp/goodcat/deploy/init.sh
-      dest: /srv/goodcat/
+      dest: /srv/goodcat_prod/
       follow: yes
+      force: yes
     become: yes
 
   - name: Restart service
