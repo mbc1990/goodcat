@@ -1,0 +1,6 @@
+---
+- hosts: wren.passerines.io
+  tasks:
+  - name: Download the latest master branch code
+    debug:
+      msg: "todo implement this"
