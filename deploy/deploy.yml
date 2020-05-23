@@ -32,4 +32,8 @@
       follow: yes
     become: yes
 
-  # TODO: Restart systemd module
+  - name: Restart service
+    systemd:
+      name: goodcat.service
+      state: restarted
+    become: yes
