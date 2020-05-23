@@ -14,7 +14,7 @@ export default function Home() {
         </h1>
 
         <p className="description">
-          the goods are cat but the cats are good
+          Check back soon for updates
         </p>
 
       </main>
