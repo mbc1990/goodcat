@@ -1,6 +1,35 @@
 ---
 - hosts: wren.passerines.io
   tasks:
+
   - name: Download the latest master branch code
-    debug:
-      msg: "todo implement this"
+    git:
+      repo: git@github.com:mbc1990/goodcat.git
+      dest: /tmp/goodcat/
+      
+  - name: Install dependencies
+    npm:
+      path: /tmp/goodcat/goodcat/
+  
+  - name: Build app
+    command: npm run build
+    args:
+      chdir: /tmp/goodcat/goodcat/
+
+  - name: Copy to prod location
+    copy:
+      remote_src: yes
+      src: /tmp/goodcat/goodcat/
+      dest: /srv/
+      follow: yes
+    become: yes
+
+  - name: Set up prod init script
+    copy:
+      remote_src: yes 
+      src: /tmp/goodcat/deploy/init.sh
+      dest: /srv/goodcat/
+      follow: yes
+    become: yes
+
+  # TODO: Restart systemd module
