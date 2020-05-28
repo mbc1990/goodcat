@@ -1,11 +1,12 @@
-const db = require('../../lib/db')
-const escape = require('sql-template-strings')
+const db = require('../../../lib/db')
 
 module.exports = async (req, res) => {
-  const [profile] = await db.query(escape`
+  console.log("Getting a post");
+  const [profiles] = await db.any(`
     SELECT *
-    FROM profiles
-    WHERE id = ${req.query.id}
-  `)
-  res.status(200).json({ profile })
+    FROM posts 
+    WHERE id = $1
+  `, [req.query.id])
+  console.log("Got a post: " + profiles);
+  res.status(200).json({profiles})
 }
