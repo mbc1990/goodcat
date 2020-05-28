@@ -2,14 +2,6 @@ import fetch from 'isomorphic-unfetch'
 import Link from 'next/link'
 
 HomePage.getInitialProps = async ({ req, query }) => {
-    /*
-  const protocol = req
-    ? `${req.headers['x-forwarded-proto']}:`
-    : 'https';
-  const host = req ? req.headers['x-forwarded-host'] : 'localhost';
-  const pageRequest = `${protocol}//${host}/api/profiles?page=${query.page ||
-    1}&limit=${query.limit || 9}`
-    */
   const protocol = 'http:';
   const host = 'localhost:3000';
   const pageRequest = `${protocol}//${host}/api/profiles?page=${query.page ||
@@ -18,23 +10,22 @@ HomePage.getInitialProps = async ({ req, query }) => {
   const res = await fetch(pageRequest)
   console.log("Status: " + res.status);
 
-  // console.log(await res.json());
   console.log(req.headers);
-  // const json = await res.json()
-  // return json
-  return {'profiles': [{'id': 1, 'avatar': '', 'name': 'testname'}]};
+  const json = await res.json()
+  console.log(json);
+  return json
 }
 
-function HomePage({ profiles, page, pageCount }) {
+function HomePage({ posts, page, pageCount }) {
   return (
     <>
       <ul>
-        {profiles.map(p => (
-          <li className="profile" key={p.id}>
+        {posts.map(p => (
+          <li className="post" key={p.id}>
             <Link href={`/profile?id=${p.id}`}>
               <a>
-                <img src={p.avatar} />
-                <span>{p.name}</span>
+                <img src={p.url} />
+                <span>{p.created_at}</span>
               </a>
             </Link>
           </li>

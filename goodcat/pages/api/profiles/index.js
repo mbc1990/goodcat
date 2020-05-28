@@ -1,31 +1,25 @@
-// const db = require('../../lib/db')
-// const escape = require('sql-template-strings')
+const db = require('../../../lib/db')
 
 module.exports = async (req, res) => {
-  throw "Heres a silly error";
   console.log("In index endpoint");
   let page = parseInt(req.query.page) || 1
   const limit = parseInt(req.query.limit) || 9
   if (page < 1) page = 1
   console.log("Getting some data from the database");
-    /*
-  const profiles = await db.query(escape`
+  const posts = await db.any(`
       SELECT *
-      FROM profiles
+      FROM posts 
       ORDER BY id
-      LIMIT ${(page - 1) * limit}, ${limit}
-    `)
-  const count = await db.query(escape`
+      LIMIT $1
+      OFFSET $2
+    `, [limit, (page-1) * limit])
+  const count = await db.any(`
       SELECT COUNT(*)
-      AS profilesCount
-      FROM profiles
+      AS postsCount
+      FROM posts 
     `)
-  const { profilesCount } = count[0]
-  const pageCount = Math.ceil(profilesCount / limit)
-  */
+  const { postsCount } = count[0]
+  const pageCount = Math.ceil(postsCount / limit)
 
-  const profiles = {'profiles': [{'id': 1, 'avatar': '', 'name': 'testname'}]};
-  // res.status(200).json({ profiles, pageCount, page })
-  const pageCount = 1;
-  res.status(200).json({ profiles, pageCount, page })
+  res.status(200).json({ posts, pageCount, page })
 }
